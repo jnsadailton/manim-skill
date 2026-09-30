@@ -101,7 +101,7 @@ Before writing any Manim code, wrtie `plan.md`:
 
 ### Phase 2: Code
 
-**BEFORE writing any code — and again every time you create a new scene or change an existing one — you MUST invoke the `manimce-best-practices` skill using the Skill tool, then read the relevant rule files it references (e.g., `rules/scenes.md`, `rules/animations.md`, `rules/timing.md`, `rules/positioning.md`, `rules/text.md`, `rules/latex.md`) based on what the scene needs.**
+**BEFORE writing any code, and again every time you create a new scene or change an existing one, you MUST invoke the `manimce-best-practices` skill using the Skill tool, then read the relevant rule files it references (e.g., `rules/scenes.md`, `rules/animations.md`, `rules/timing.md`, `rules/positioning.md`, `rules/text.md`, `rules/latex.md`) based on what the scene needs.**
 
 If that skill is not installed, install it before continuing:
 ```bash
@@ -137,7 +137,7 @@ class Scene1_Introduction(Scene):
 
 ## Style Rules (mandatory)
 
-### 1. Transitions — one idea on screen at a time
+### 1. Transitions: one idea on screen at a time
 - Before a new visual block appears, the previous one must leave: `FadeOut` it, or morph it into the next with `ReplacementTransform` / `TransformMatchingTex` when there is natural continuity (preferred).
 - Never place a new note, formula or label on top of, or crowding, something still visible. If two things must be read together, lay them out with `arrange` / `next_to` and a clear `buff`, never overlapping.
 - Every mobject a scene adds must be faded out by the end of that scene. Track them; don't leave orphans.
@@ -151,11 +151,11 @@ class Scene1_Introduction(Scene):
 ### 3. Hitting the target length
 - If the render is shorter than the requested duration, add **new dynamic content**: new short scenes, extra worked examples, historical hooks, simulations, animated charts. Prefer several light, fast scenes over a few heavy ones.
 - **Never** stretch time with long static `self.wait()` pauses. Every added second must have something new happening on screen.
-- Measure real duration with `ffprobe` after rendering; `add_subcaption(duration=...)` does NOT advance the scene clock — only `play()` and `wait()` do.
+- Measure real duration with `ffprobe` after rendering; `add_subcaption(duration=...)` does NOT advance the scene clock; only `play()` and `wait()` do.
 
 ### 4. No AI-slop writing
 - On-screen text, subcaptions and voiceover must read like a person talking. **Never use the em dash (—)**; use commas, colons, periods or parentheses.
-- Avoid other machine-written tells: dramatic "X — e Y" asides, repeated "não é X, é Y" formulas, ellipsis build-ups, stacked adjectives.
+- Avoid other machine-written tells: dramatic "X, e Y" asides tacked on with a dash, repeated "não é X, é Y" formulas, ellipsis build-ups, stacked adjectives.
 - Before rendering, grep the script for `—` and fix every hit.
 
 ### 5. plan.md is the voiceover script: keep it in sync
