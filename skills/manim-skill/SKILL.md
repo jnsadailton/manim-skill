@@ -101,7 +101,15 @@ Before writing any Manim code, wrtie `plan.md`:
 
 ### Phase 2: Code
 
-**BEFORE writing any code, you MUST invoke the `manimce-best-practices` skill using the Skill tool, then read the relevant rule files it references (e.g., `rules/scenes.md`, `rules/animations.md`) based on what your video needs.**
+**BEFORE writing any code — and again every time you create a new scene or change an existing one — you MUST invoke the `manimce-best-practices` skill using the Skill tool, then read the relevant rule files it references (e.g., `rules/scenes.md`, `rules/animations.md`, `rules/timing.md`, `rules/positioning.md`, `rules/text.md`, `rules/latex.md`) based on what the scene needs.**
+
+If that skill is not installed, install it before continuing:
+```bash
+npx skills add adithya-s-k/manim_skill/skills/manimce-best-practices
+```
+Without Node.js, clone `https://github.com/adithya-s-k/manim_skill` and copy `skills/manimce-best-practices` into `~/.claude/skills/`.
+
+**Then apply the Style Rules below to every scene.**
 
 Write Manim Community Edition code in `script.py`.
 
@@ -127,7 +135,30 @@ class Scene1_Introduction(Scene):
         self.play(FadeOut(title), subcaption="Let's begin", subcaption_duration=1)
 ```
 
+## Style Rules (mandatory)
+
+### 1. Transitions — one idea on screen at a time
+- Before a new visual block appears, the previous one must leave: `FadeOut` it, or morph it into the next with `ReplacementTransform` / `TransformMatchingTex` when there is natural continuity (preferred).
+- Never place a new note, formula or label on top of, or crowding, something still visible. If two things must be read together, lay them out with `arrange` / `next_to` and a clear `buff`, never overlapping.
+- Every mobject a scene adds must be faded out by the end of that scene. Track them; don't leave orphans.
+- Before rendering, walk each scene beat by beat and list what is on screen at each moment. If two groups share the same region, fix it.
+
+### 2. Text is support, not the show
+- Screens with only text should be rare. Each beat should have a visual carrying the idea (graph, dots, shapes, icons, formula, bars, timeline); text labels or complements it.
+- When a screen really is only text, center it: `.move_to(ORIGIN)`. Don't push lone text to an edge.
+- Keep font sizes consistent across the video (titles, body, labels).
+
+### 3. Hitting the target length
+- If the render is shorter than the requested duration, add **new dynamic content**: new short scenes, extra worked examples, historical hooks, simulations, animated charts. Prefer several light, fast scenes over a few heavy ones.
+- **Never** stretch time with long static `self.wait()` pauses. Every added second must have something new happening on screen.
+- Measure real duration with `ffprobe` after rendering; `add_subcaption(duration=...)` does NOT advance the scene clock — only `play()` and `wait()` do.
+
+### 4. Project memory
+- Keep a `CLAUDE.md` at the root of the user's videos folder with these standing preferences, and read it before starting or editing a video.
+
 ### Phase 3: Render
+
+**Windows notes:** use `python -m manim` if `manim` is not on PATH. If the path contains `[` or `]`, use `Set-Location -LiteralPath "..."` in PowerShell (plain `cd` treats brackets as wildcards). Re-render only the scenes that changed, update `concat.txt` when scenes are added, then re-stitch.
 
 Use `manim` CLI to render scenes. Multiple scenes can be rendered in parallel with one command.
 
