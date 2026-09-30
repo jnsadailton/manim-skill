@@ -153,7 +153,18 @@ class Scene1_Introduction(Scene):
 - **Never** stretch time with long static `self.wait()` pauses. Every added second must have something new happening on screen.
 - Measure real duration with `ffprobe` after rendering; `add_subcaption(duration=...)` does NOT advance the scene clock — only `play()` and `wait()` do.
 
-### 4. Project memory
+### 4. No AI-slop writing
+- On-screen text, subcaptions and voiceover must read like a person talking. **Never use the em dash (—)**; use commas, colons, periods or parentheses.
+- Avoid other machine-written tells: dramatic "X — e Y" asides, repeated "não é X, é Y" formulas, ellipsis build-ups, stacked adjectives.
+- Before rendering, grep the script for `—` and fix every hit.
+
+### 5. plan.md is the voiceover script: keep it in sync
+- Every time scenes are **created, removed, reordered or have their narration changed**, update `plan.md` in the same turn so it matches `script.py` exactly.
+- `plan.md` must end with a **"Roteiro de narração"** section: one heading per scene, in `concat.txt` order, containing every `add_subcaption()` line of that scene as plain paragraphs, in order. This is what the user reads aloud to record the voiceover, so it must be complete and speakable.
+- Easiest way to build it: after rendering, read each scene's generated `.srt` (next to the `.mp4`) and copy the lines in order.
+- Also keep the per-scene sections (duration, purpose, visuals) accurate for any scene that changed.
+
+### 6. Project memory
 - Keep a `CLAUDE.md` at the root of the user's videos folder with these standing preferences, and read it before starting or editing a video.
 
 ### Phase 3: Render
